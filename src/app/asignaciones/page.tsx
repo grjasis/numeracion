@@ -160,7 +160,7 @@ export default async function AllocationsPage({
         {result.items.length === 0 ? (
           <EmptyState>No hay asignaciones que coincidan con los filtros.</EmptyState>
         ) : (
-          <TableWrapper>
+          <TableWrapper minWidth="76rem">
             <thead>
               <tr>
                 <Th>Indicativo</Th>

@@ -102,7 +102,7 @@ export default function PlanPage() {
         title="Origen de los códigos de área actuales"
         description="En la migración a diez dígitos, el Plan antepuso un dígito a cada indicativo previo según la región. Por eso el primer dígito todavía indica la macrozona."
       >
-        <TableWrapper>
+        <TableWrapper minWidth="22rem">
           <thead>
             <tr>
               <Th>Dígito antepuesto</Th>
@@ -129,7 +129,7 @@ export default function PlanPage() {
 
       <Section title="Prefijos de acceso">
         <div className="grid gap-4 lg:grid-cols-2">
-          <TableWrapper>
+          <TableWrapper minWidth="28rem">
             <thead>
               <tr>
                 <Th>Prefijo</Th>
@@ -161,7 +161,7 @@ export default function PlanPage() {
         title="Códigos de servicios especiales"
         description="Formato 1XY, salvo los servicios de operadora. El 911 se incorporó después del texto original como número único de emergencias."
       >
-        <TableWrapper>
+        <TableWrapper minWidth="24rem">
           <thead>
             <tr>
               <Th>Código</Th>
@@ -185,7 +185,7 @@ export default function PlanPage() {
         title="Números no geográficos"
         description="Numeración virtual que requiere una traducción antes de encaminar la llamada. Queda fuera del alcance de este tablero, que analiza solo numeración geográfica."
       >
-        <TableWrapper>
+        <TableWrapper minWidth="26rem">
           <thead>
             <tr>
               <Th>Indicativo</Th>
@@ -208,7 +208,7 @@ export default function PlanPage() {
         description="Códigos que usa Enacom en las columnas SERVICIO y MODALIDAD del archivo publicado."
       >
         <div className="grid gap-4 lg:grid-cols-2">
-          <TableWrapper>
+          <TableWrapper minWidth="26rem">
             <caption className="px-4 py-3 text-left text-sm font-medium">
               Servicios
             </caption>
@@ -228,7 +228,7 @@ export default function PlanPage() {
             </tbody>
           </TableWrapper>
 
-          <TableWrapper>
+          <TableWrapper minWidth="26rem">
             <caption className="px-4 py-3 text-left text-sm font-medium">
               Modalidades
             </caption>

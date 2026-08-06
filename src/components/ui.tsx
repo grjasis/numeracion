@@ -91,11 +91,26 @@ export function OccupancyBar({ ratio }: { ratio: number }) {
   );
 }
 
-/** Tabla con estilos consistentes y desplazamiento horizontal propio. */
-export function TableWrapper({ children }: { children: ReactNode }) {
+/**
+ * Tabla con estilos consistentes y desplazamiento horizontal propio.
+ *
+ * El `min-w-0` no es decorativo: sin él, dentro de una grilla el contenedor
+ * toma el ancho mínimo de su contenido en vez de encogerse, la tabla estira la
+ * columna y la última se corta contra el borde en lugar de poder desplazarse.
+ *
+ * `minWidth` fija el ancho a partir del cual la tabla empieza a desplazarse;
+ * conviene subirlo en las tablas de muchas columnas para que no se apelotonen.
+ */
+export function TableWrapper({
+  children,
+  minWidth = "40rem",
+}: {
+  children: ReactNode;
+  minWidth?: string;
+}) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-hairline bg-surface">
-      <table className="w-full min-w-[40rem] border-collapse text-sm">
+    <div className="table-scroll w-full min-w-0 max-w-full overflow-x-auto rounded-lg border border-hairline">
+      <table className="w-full border-collapse text-sm" style={{ minWidth }}>
         {children}
       </table>
     </div>
@@ -113,7 +128,7 @@ export function Th({
   return (
     <th
       scope="col"
-      className={`border-b border-hairline px-4 py-3 text-xs font-medium uppercase tracking-wide text-ink-muted ${
+      className={`whitespace-nowrap border-b border-hairline px-4 py-3 text-xs font-medium uppercase tracking-wide text-ink-muted ${
         numeric ? "text-right" : "text-left"
       }`}
     >
@@ -140,6 +155,30 @@ export function Td({
     >
       {children}
     </td>
+  );
+}
+
+/**
+ * Aviso destacado. `tone` cambia el color del filo lateral, pero el texto
+ * siempre dice de qué se trata: el color no es el único canal.
+ */
+export function Callout({
+  title,
+  tone = "info",
+  children,
+}: {
+  title: string;
+  tone?: "info" | "warning";
+  children: ReactNode;
+}) {
+  const border = tone === "warning" ? "border-l-warning" : "border-l-series-1";
+  return (
+    <aside
+      className={`rounded-lg border border-hairline border-l-4 ${border} bg-surface p-5`}
+    >
+      <h3 className="text-sm font-semibold">{title}</h3>
+      <div className="mt-2 space-y-2 text-sm text-ink-secondary">{children}</div>
+    </aside>
   );
 }
 

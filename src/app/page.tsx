@@ -32,6 +32,8 @@ export default function HomePage() {
   const mostSaturated = [...areaCodes]
     .sort((a, b) => b.occupancy - a.occupancy)
     .slice(0, 10);
+  // `areaCodes` viene ordenado de mayor a menor, así que la cola son los más chicos.
+  const smallestAreas = [...areaCodes].reverse().slice(0, 10);
 
   return (
     <div className="space-y-12">
@@ -98,7 +100,7 @@ export default function HomePage() {
             }))}
             description="Cantidad de números contenidos en los bloques asignados a cada prestador."
           />
-          <TableWrapper>
+          <TableWrapper minWidth="30rem">
             <thead>
               <tr>
                 <Th>Operador</Th>
@@ -130,8 +132,8 @@ export default function HomePage() {
         title="Códigos de área"
         description={
           <>
-            Los indicativos con mayor volumen asignado y los que tienen su espacio
-            más comprometido.{" "}
+            Los indicativos con mayor y menor volumen asignado, y los que tienen su
+            espacio más comprometido.{" "}
             <Link href="/areas" className="underline underline-offset-2">
               Ver todos los códigos de área
             </Link>
@@ -139,8 +141,8 @@ export default function HomePage() {
           </>
         }
       >
-        <div className="grid gap-4 lg:grid-cols-2">
-          <TableWrapper>
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          <TableWrapper minWidth="24rem">
             <caption className="px-4 py-3 text-left text-sm font-medium">
               Mayor cantidad de números asignados
             </caption>
@@ -166,7 +168,33 @@ export default function HomePage() {
             </tbody>
           </TableWrapper>
 
-          <TableWrapper>
+          <TableWrapper minWidth="24rem">
+            <caption className="px-4 py-3 text-left text-sm font-medium">
+              Menor cantidad de números asignados
+            </caption>
+            <thead>
+              <tr>
+                <Th>Indicativo</Th>
+                <Th>Localidad</Th>
+                <Th numeric>Números</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {smallestAreas.map((area) => (
+                <tr key={area.areaCode}>
+                  <Td>
+                    <Link href={`/areas/${area.areaCode}`} className="font-mono hover:underline">
+                      {area.areaCode}
+                    </Link>
+                  </Td>
+                  <Td>{area.locality}</Td>
+                  <Td numeric>{formatInteger(area.assignedNumbers)}</Td>
+                </tr>
+              ))}
+            </tbody>
+          </TableWrapper>
+
+          <TableWrapper minWidth="24rem">
             <caption className="px-4 py-3 text-left text-sm font-medium">
               Mayor ocupación del espacio disponible
             </caption>

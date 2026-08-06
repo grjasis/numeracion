@@ -16,6 +16,7 @@
   --gridline: #e1e0d9;
   --baseline: #c3c2b7;
   --border: rgba(11, 11, 11, 0.1);
+  --scroll-shadow: rgba(11, 11, 11, 0.16);
 
   /* Serie 1 (azul) para magnitudes; serie 2 (naranja) para la segunda medida. */
   --series-1: #2a78d6;
@@ -39,6 +40,7 @@
     --gridline: #2c2c2a;
     --baseline: #383835;
     --border: rgba(255, 255, 255, 0.1);
+    --scroll-shadow: rgba(0, 0, 0, 0.55);
 
     --series-1: #3987e5;
     --series-2: #d95926;
@@ -57,6 +59,7 @@
   --gridline: #2c2c2a;
   --baseline: #383835;
   --border: rgba(255, 255, 255, 0.1);
+  --scroll-shadow: rgba(0, 0, 0, 0.55);
 
   --series-1: #3987e5;
   --series-2: #d95926;
@@ -90,4 +93,26 @@ body {
 /* Las columnas numéricas se alinean verticalmente. */
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Sombras que avisan que una tabla se puede desplazar.
+ *
+ * Las capas `local` viajan con el contenido y tapan la sombra cuando ya se
+ * llegó al extremo; las capas `scroll` quedan fijas al borde. Resultado: la
+ * sombra aparece solo del lado donde hay contenido escondido, sin JavaScript.
+ * Hace falta porque en macOS las barras de desplazamiento están ocultas y una
+ * tabla cortada parece un error de diseño en vez de algo que se puede correr.
+ */
+.table-scroll {
+  background:
+    linear-gradient(to right, var(--surface-1), transparent 2.5rem) left center / 2.5rem 100%
+      no-repeat local,
+    linear-gradient(to left, var(--surface-1), transparent 2.5rem) right center / 2.5rem 100%
+      no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--scroll-shadow), transparent) left center /
+      0.85rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--scroll-shadow), transparent) right center /
+      0.85rem 100% no-repeat scroll,
+    var(--surface-1);
 }

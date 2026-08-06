@@ -17,6 +17,11 @@ actual.
 - Ranking de operadores y ficha por prestador con su cobertura geográfica.
 - Buscador de asignaciones con filtros y paginación, compartible por URL.
 - Indicativos de cuatro dígitos que todavía no fueron abiertos.
+- Consulta de un número suelto: a qué bloque, operador y localidad pertenece, con
+  las advertencias sobre portabilidad y sobre que asignado no implica activo.
+- Reparto del espacio de los indicativos que abren dentro de otro: lo que se lleva
+  el más largo se descuenta de la capacidad del más corto y se muestra aparte.
+- Página de particularidades con las rarezas verificables de la base.
 - El Plan Fundamental y la metodología documentados en el propio sitio.
 
 ## Próximo
@@ -51,12 +56,6 @@ el mismo.
 
 Botón para bajar en CSV el resultado de cualquier vista filtrada, y un endpoint JSON
 para quien quiera reprocesar los datos.
-
-### Consulta de un número
-
-Buscar un número completo y responder a qué bloque, operador y localidad pertenece.
-Es directo con la estructura actual y probablemente sea lo más útil para el público
-general.
 
 ### Alcance ampliado
 

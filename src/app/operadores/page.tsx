@@ -60,7 +60,7 @@ export default function OperatorsPage() {
         title="Todos los operadores"
         description="Ordenados por cantidad de números asignados."
       >
-        <TableWrapper>
+        <TableWrapper minWidth="58rem">
           <thead>
             <tr>
               <Th>Operador</Th>

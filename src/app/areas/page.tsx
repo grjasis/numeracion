@@ -25,6 +25,9 @@ export default function AreasPage() {
           Cada indicativo interurbano define un espacio de numeración propio: junto
           con el número de abonado suma siempre diez dígitos, por lo que un
           indicativo de dos dígitos tiene diez veces más capacidad que uno de tres.
+          Cuando un indicativo más largo abre dentro de otro —el 2982 dentro del
+          298—, los números que se lleva figuran en la columna «cedido» y no cuentan
+          como capacidad del más corto.
         </p>
       </header>
 
@@ -50,7 +53,7 @@ export default function AreasPage() {
         title="Todos los indicativos"
         description="Ordenados por cantidad de números asignados. Hacé clic en un indicativo para ver su detalle."
       >
-        <TableWrapper>
+        <TableWrapper minWidth="70rem">
           <thead>
             <tr>
               <Th>Indicativo</Th>
@@ -60,6 +63,7 @@ export default function AreasPage() {
               <Th numeric>Bloques</Th>
               <Th numeric>Asignados</Th>
               <Th numeric>Sin asignar</Th>
+              <Th numeric>Cedido</Th>
               <Th>Ocupación</Th>
               <Th numeric>Operadores</Th>
               <Th numeric>Última asignación</Th>
@@ -82,6 +86,9 @@ export default function AreasPage() {
                 <Td numeric>{formatInteger(area.allocationCount)}</Td>
                 <Td numeric>{formatInteger(area.assignedNumbers)}</Td>
                 <Td numeric>{formatInteger(area.capacity - area.assignedNumbers)}</Td>
+                <Td numeric>
+                  {area.cededNumbers > 0 ? formatInteger(area.cededNumbers) : "—"}
+                </Td>
                 <Td>
                   <OccupancyBar ratio={area.occupancy} />
                 </Td>
@@ -97,7 +104,7 @@ export default function AreasPage() {
         title="Indicativos sin abrir"
         description="Tramos de cuatro dígitos bajo los prefijos 2 y 3 que todavía no fueron asignados a ninguna localidad. Un indicativo corto ocupa todo su tramo: el 221 de La Plata bloquea el 2210 al 2219."
       >
-        <TableWrapper>
+        <TableWrapper minWidth="48rem">
           <thead>
             <tr>
               <Th>Prefijo</Th>

@@ -15,9 +15,13 @@ Enacom y el sitio se despliega estático en Vercel.
   numeración sin asignar; además, qué indicativos de cuatro dígitos siguen libres.
 - **Detalle por indicativo**: tramos de numeración libres, ocupación por
   característica de central, operadores presentes y todas sus asignaciones.
+- **Consultar un número**: escribís un teléfono en cualquier formato y devuelve el
+  bloque, el operador y los datos de la asignación, con las salvedades del caso.
 - **Operadores**: ranking por numeración asignada y ficha con cobertura geográfica.
 - **Asignaciones**: buscador con filtros sobre las 48.903 asignaciones, compartible
   por URL.
+- **Particularidades**: códigos de área que son prefijo de otro, tamaños de bloque,
+  el 911 ausente de toda la base y otros casos límite.
 - **Plan de numeración** y **metodología**: las reglas aplicadas y los límites del
   análisis, explicados en el propio sitio.
 
