@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { OccupancyBar, Section, StatCard, TableWrapper, Td, Th } from "@/components/ui";
+import { AreaCodesTable } from "@/components/area-codes-table";
+import { Section, StatCard, TableWrapper, Td, Th } from "@/components/ui";
 import { getAreaCodes, getNationalSummary } from "@/lib/dataset/queries";
-import { formatCompact, formatInteger, formatShortDate } from "@/lib/format";
+import { formatCompact, formatInteger } from "@/lib/format";
 
 export const metadata: Metadata = {
   title: "Códigos de área",
@@ -51,53 +51,9 @@ export default function AreasPage() {
 
       <Section
         title="Todos los indicativos"
-        description="Ordenados por cantidad de números asignados. Hacé clic en un indicativo para ver su detalle."
+        description="Ordenados por indicativo. Hacé clic en cualquier encabezado para ordenar por esa columna y de nuevo para invertir el orden; el indicativo lleva al detalle."
       >
-        <TableWrapper minWidth="70rem">
-          <thead>
-            <tr>
-              <Th>Indicativo</Th>
-              <Th>Localidad cabecera</Th>
-              <Th>Región</Th>
-              <Th numeric>Dígitos de abonado</Th>
-              <Th numeric>Bloques</Th>
-              <Th numeric>Asignados</Th>
-              <Th numeric>Sin asignar</Th>
-              <Th numeric>Cedido</Th>
-              <Th>Ocupación</Th>
-              <Th numeric>Operadores</Th>
-              <Th numeric>Última asignación</Th>
-            </tr>
-          </thead>
-          <tbody>
-            {areas.map((area) => (
-              <tr key={area.areaCode}>
-                <Td>
-                  <Link
-                    href={`/areas/${area.areaCode}`}
-                    className="font-mono font-medium hover:underline"
-                  >
-                    {area.areaCode}
-                  </Link>
-                </Td>
-                <Td>{area.locality}</Td>
-                <Td>{area.region}</Td>
-                <Td numeric>{area.subscriberDigits}</Td>
-                <Td numeric>{formatInteger(area.allocationCount)}</Td>
-                <Td numeric>{formatInteger(area.assignedNumbers)}</Td>
-                <Td numeric>{formatInteger(area.capacity - area.assignedNumbers)}</Td>
-                <Td numeric>
-                  {area.cededNumbers > 0 ? formatInteger(area.cededNumbers) : "—"}
-                </Td>
-                <Td>
-                  <OccupancyBar ratio={area.occupancy} />
-                </Td>
-                <Td numeric>{area.operatorCount}</Td>
-                <Td numeric>{formatShortDate(area.lastAssignedAt)}</Td>
-              </tr>
-            ))}
-          </tbody>
-        </TableWrapper>
+        <AreaCodesTable areas={areas} />
       </Section>
 
       <Section
