@@ -28,7 +28,7 @@ export default function MethodologyPage() {
       </header>
 
       <Section title="Origen del dato">
-        <TableWrapper>
+        <TableWrapper minWidth="30rem">
           <tbody>
             <tr>
               <Th>Archivo procesado</Th>
@@ -113,7 +113,7 @@ export default function MethodologyPage() {
       </Section>
 
       <Section title="Validaciones aplicadas en la carga">
-        <TableWrapper>
+        <TableWrapper minWidth="34rem">
           <thead>
             <tr>
               <Th>Control</Th>
@@ -154,7 +154,7 @@ export default function MethodologyPage() {
           </tbody>
         </TableWrapper>
         {meta.warnings.length > 0 ? (
-          <TableWrapper>
+          <TableWrapper minWidth="34rem">
             <caption className="px-4 py-3 text-left text-sm font-medium">
               Avisos de la carga actual
             </caption>

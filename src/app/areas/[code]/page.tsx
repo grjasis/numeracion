@@ -6,6 +6,7 @@ import { DigitOccupancyChart } from "@/components/charts/digit-occupancy-chart";
 import { OperatorsChart } from "@/components/charts/operators-chart";
 import { TimelineCharts } from "@/components/charts/timeline-chart";
 import {
+  Callout,
   OccupancyBar,
   Section,
   StatCard,
@@ -47,7 +48,7 @@ export default async function AreaDetailPage({ params }: PageProps<"/areas/[code
   const detail = getAreaCodeDetail(code);
   if (!detail) notFound();
 
-  const freeNumbers = detail.capacity - detail.assignedNumbers;
+  const freeNumbers = detail.space.free;
   const topOperators = detail.operators.slice(0, 10);
 
   return (
@@ -75,6 +76,59 @@ export default async function AreaDetailPage({ params }: PageProps<"/areas/[code
         </p>
       </header>
 
+      {detail.childAreaCodes.length > 0 ? (
+        <Callout title="Este código de área contiene a otros">
+          <p>
+            Los indicativos{" "}
+            {detail.childAreaCodes.map((code, index) => (
+              <span key={code}>
+                {index > 0 ? (index === detail.childAreaCodes.length - 1 ? " y " : ", ") : null}
+                <Link href={`/areas/${code}`} className="font-mono text-ink hover:underline">
+                  {code}
+                </Link>
+                {detail.relatedLocalities[code] ? ` (${detail.relatedLocalities[code]})` : null}
+              </span>
+            ))}{" "}
+            abren dentro del {detail.areaCode}: sus números son exactamente los de esta
+            área que empiezan con{" "}
+            {detail.childAreaCodes
+              .map((code) => code.slice(detail.areaCode.length))
+              .join(", ")}
+            , porque marcar {detail.areaCode} y después ese dígito da el mismo número
+            nacional.
+          </p>
+          <p>
+            Por eso esos tramos no cuentan como espacio disponible del{" "}
+            {detail.areaCode}: aparecen en gris en el gráfico y listados aparte como
+            tramos cedidos.
+          </p>
+        </Callout>
+      ) : null}
+
+      {detail.parentAreaCode ? (
+        <Callout title="Este código de área abre dentro de otro">
+          <p>
+            El {detail.areaCode} ocupa los números del{" "}
+            <Link
+              href={`/areas/${detail.parentAreaCode}`}
+              className="font-mono text-ink hover:underline"
+            >
+              {detail.parentAreaCode}
+            </Link>
+            {detail.relatedLocalities[detail.parentAreaCode]
+              ? ` (${detail.relatedLocalities[detail.parentAreaCode]})`
+              : null}{" "}
+            que empiezan con{" "}
+            <span className="font-mono text-ink">
+              {detail.areaCode.slice(detail.parentAreaCode.length)}
+            </span>
+            . Un número de esta área también se puede leer como un número del{" "}
+            {detail.parentAreaCode}, así que al consultarlo pueden aparecer las dos
+            lecturas.
+          </p>
+        </Callout>
+      ) : null}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Números asignados"
@@ -100,9 +154,9 @@ export default async function AreaDetailPage({ params }: PageProps<"/areas/[code
 
       <Section title="Uso del espacio de numeración">
         <div className="grid gap-4 lg:grid-cols-2">
-          <DigitOccupancyChart data={detail.occupancyByDigit} />
+          <DigitOccupancyChart data={detail.space.byFirstDigit} />
           <div className="space-y-4">
-            <TableWrapper>
+            <TableWrapper minWidth="24rem">
               <caption className="px-4 py-3 text-left text-sm font-medium">
                 Tramos sin asignar
               </caption>
@@ -114,7 +168,7 @@ export default async function AreaDetailPage({ params }: PageProps<"/areas/[code
                 </tr>
               </thead>
               <tbody>
-                {detail.freeRanges.map((range) => (
+                {detail.space.freeRanges.map((range) => (
                   <tr key={range.first}>
                     <Td className="font-mono">{formatSubscriberNumber(range.first)}</Td>
                     <Td className="font-mono">{formatSubscriberNumber(range.last)}</Td>
@@ -124,29 +178,49 @@ export default async function AreaDetailPage({ params }: PageProps<"/areas/[code
               </tbody>
             </TableWrapper>
 
-            {detail.reservedRanges.length > 0 ? (
-              <TableWrapper>
+            {detail.space.unavailableRanges.length > 0 ? (
+              <TableWrapper minWidth="34rem">
                 <caption className="px-4 py-3 text-left text-sm font-medium">
-                  Tramos reservados
+                  Tramos no asignables
                   <span className="ml-2 font-normal text-ink-secondary">
-                    no asignables: ningún número local puede empezar así
+                    numeración que este código de área no puede entregar
                   </span>
                 </caption>
                 <thead>
                   <tr>
-                    <Th>Prefijo</Th>
                     <Th>Desde</Th>
                     <Th>Hasta</Th>
                     <Th numeric>Números</Th>
+                    <Th>Motivo</Th>
                   </tr>
                 </thead>
                 <tbody>
-                  {detail.reservedRanges.map((range) => (
-                    <tr key={range.prefix}>
-                      <Td className="font-mono">{range.prefix}</Td>
+                  {detail.space.unavailableRanges.map((range) => (
+                    <tr key={`${range.reason}-${range.first}`}>
                       <Td className="font-mono">{formatSubscriberNumber(range.first)}</Td>
                       <Td className="font-mono">{formatSubscriberNumber(range.last)}</Td>
                       <Td numeric>{formatInteger(range.size)}</Td>
+                      <Td>
+                        {range.reason === "reservado" ? (
+                          <>
+                            Reservado por el Plan (
+                            <span className="font-mono">{range.detail}</span>)
+                          </>
+                        ) : (
+                          <>
+                            Pertenece al código de área{" "}
+                            <Link
+                              href={`/areas/${range.detail}`}
+                              className="font-mono hover:underline"
+                            >
+                              {range.detail}
+                            </Link>
+                            {detail.relatedLocalities[range.detail]
+                              ? ` (${detail.relatedLocalities[range.detail]})`
+                              : null}
+                          </>
+                        )}
+                      </Td>
                     </tr>
                   ))}
                 </tbody>
@@ -173,7 +247,7 @@ export default async function AreaDetailPage({ params }: PageProps<"/areas/[code
             title="Numeración por operador"
             description="Los diez prestadores con más números asignados en este indicativo."
           />
-          <TableWrapper>
+          <TableWrapper minWidth="40rem">
             <thead>
               <tr>
                 <Th>Operador</Th>
@@ -225,7 +299,7 @@ export default async function AreaDetailPage({ params }: PageProps<"/areas/[code
           </>
         }
       >
-        <TableWrapper>
+        <TableWrapper minWidth="68rem">
           <thead>
             <tr>
               <Th>Bloque</Th>

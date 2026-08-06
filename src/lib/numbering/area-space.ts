@@ -90,3 +90,35 @@ export function summarizeAreaSpace(assignedCodes: Iterable<string>): AreaSpaceSu
     freeByPrefix: [...grouped.values()].sort((a, b) => a.prefix.localeCompare(b.prefix)),
   };
 }
+
+/**
+ * Indicativos más largos que abren dentro de otro.
+ *
+ * El 2982 y el 2983 abren dentro del 298: sus números son exactamente los del
+ * 298 que empiezan con 2 y con 3. Saberlo es indispensable para no contar dos
+ * veces el mismo espacio de numeración.
+ */
+export function childAreaCodes(
+  areaCode: string,
+  allAreaCodes: Iterable<string>,
+): string[] {
+  const children: string[] = [];
+  for (const candidate of allAreaCodes) {
+    if (candidate.length > areaCode.length && candidate.startsWith(areaCode)) {
+      children.push(candidate);
+    }
+  }
+  return children.sort();
+}
+
+/** Indicativo más corto dentro del cual abre este, si existe. */
+export function parentAreaCode(
+  areaCode: string,
+  allAreaCodes: ReadonlySet<string>,
+): string | null {
+  for (let length = 2; length < areaCode.length; length++) {
+    const candidate = areaCode.slice(0, length);
+    if (allAreaCodes.has(candidate)) return candidate;
+  }
+  return null;
+}

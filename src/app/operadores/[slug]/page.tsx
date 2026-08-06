@@ -68,7 +68,7 @@ export default async function OperatorDetailPage({
         title="Presencia por código de área"
         description="Numeración asignada en cada indicativo donde el operador tiene bloques."
       >
-        <TableWrapper>
+        <TableWrapper minWidth="34rem">
           <thead>
             <tr>
               <Th>Indicativo</Th>
@@ -117,7 +117,7 @@ export default async function OperatorDetailPage({
           </>
         }
       >
-        <TableWrapper>
+        <TableWrapper minWidth="54rem">
           <thead>
             <tr>
               <Th>Indicativo</Th>

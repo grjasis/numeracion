@@ -2,9 +2,11 @@ import Link from "next/link";
 
 const LINKS = [
   { href: "/", label: "Panorama" },
+  { href: "/consultar", label: "Consultar un número" },
   { href: "/areas", label: "Códigos de área" },
   { href: "/operadores", label: "Operadores" },
   { href: "/asignaciones", label: "Asignaciones" },
+  { href: "/particularidades", label: "Particularidades" },
   { href: "/plan", label: "Plan de numeración" },
   { href: "/metodologia", label: "Metodología" },
 ];

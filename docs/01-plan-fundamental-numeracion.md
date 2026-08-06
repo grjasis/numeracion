@@ -108,6 +108,39 @@ Ejemplos del propio Plan: AMBA `1`-8205656 → `11`-48205656; La Plata `21`-8367
 De ahí que el **primer dígito del indicativo siga indicando la macrorregión**, algo
 que el tablero usa para agrupar áreas.
 
+## 4 bis. Indicativos que abren dentro de otro
+
+Como el Plan admite indicativos de dos, tres y cuatro dígitos, hay indicativos
+cortos que conviven con otros más largos que empiezan igual: el `298` (General
+Roca) con el `2982` (Orense) y el `2983` (Tres Arroyos). En la base actual son
+**15 indicativos cortos que contienen a 49 más largos**.
+
+No son espacios de numeración separados, son **el mismo espacio**:
+
+```
+298 + 2 123456  →  2982123456
+2982 +   123456  →  2982123456   ← el mismo número nacional
+```
+
+De ahí salen dos consecuencias que el tablero aplica:
+
+1. **Capacidad.** Los números del `298` que empiezan con 2 pertenecen al `2982`,
+   así que se descuentan de la capacidad del `298`. A nivel país eso son
+   **41.843.000 números** que, contados ingenuamente, aparecerían dos veces.
+2. **Lectura ambigua.** Un número que arranca con `2982` se puede partir de dos
+   maneras y las dos respetan los diez dígitos, por lo que la consulta de un
+   número muestra todas las lecturas posibles.
+
+El reparto no siempre es total. El `264` (San Juan) tiene bloques propios que
+empiezan con 6 y además existe el `2646` (San Agustín del Valle Fértil), que
+ocupa el resto de ese tramo. Verificado sobre la base, **no hay un solo número
+asignado a dos áreas a la vez**: el espacio compartido está coordinado.
+
+El cálculo está en `computeAreaSpace`
+([`free-space.ts`](../src/lib/numbering/free-space.ts)), que reparte el espacio
+de cada indicativo en cuatro conjuntos disjuntos —asignado, reservado, cedido y
+libre— cuya suma es el espacio útil del indicativo.
+
 ## 5. Qué espacio queda para nuevos códigos de área
 
 El Plan reserva (tabla 5.2) los primeros dígitos **4, 5, 7 y 9** para abrir nuevos

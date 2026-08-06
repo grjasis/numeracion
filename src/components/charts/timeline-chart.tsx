@@ -16,6 +16,29 @@ import { formatCompact, formatInteger } from "@/lib/format";
 import type { TimelinePoint } from "@/lib/dataset/queries";
 import { AXIS_STYLE, ChartFrame, ChartTooltip, GRID_STROKE, SERIES_1 } from "./chart-theme";
 
+/** Cada cuántos años se rotula el eje, contando desde el último hacia atrás. */
+const TICK_STEP = 4;
+
+/**
+ * Años a rotular en el eje horizontal.
+ *
+ * Se generan desde el último hacia atrás para que el año de cierre de la serie
+ * siempre quede escrito; el primero se agrega solo si no queda pegado al
+ * siguiente. Sin esto Recharts descarta etiquetas por falta de lugar y el
+ * extremo derecho del eje puede quedar sin año.
+ */
+function yearTicks(points: TimelinePoint[]): number[] {
+  if (points.length === 0) return [];
+  const first = points[0].year;
+  const last = points[points.length - 1].year;
+
+  const ticks: number[] = [];
+  for (let year = last; year > first; year -= TICK_STEP) ticks.push(year);
+  if (ticks.length === 0 || ticks[ticks.length - 1] - first >= 2) ticks.push(first);
+
+  return ticks.reverse();
+}
+
 /**
  * Evolución de las asignaciones en el tiempo.
  *
@@ -23,6 +46,8 @@ import { AXIS_STYLE, ChartFrame, ChartTooltip, GRID_STROKE, SERIES_1 } from "./c
  * bloques), así que van en dos gráficos separados en vez de un doble eje.
  */
 export function TimelineCharts({ points }: { points: TimelinePoint[] }) {
+  const ticks = yearTicks(points);
+
   return (
     <div className="grid gap-4 lg:grid-cols-2">
       <ChartFrame
@@ -43,7 +68,8 @@ export function TimelineCharts({ points }: { points: TimelinePoint[] }) {
               tick={AXIS_STYLE}
               tickLine={false}
               axisLine={{ stroke: "var(--baseline)" }}
-              minTickGap={24}
+              ticks={ticks}
+              interval={0}
             />
             <YAxis
               tick={AXIS_STYLE}
@@ -82,7 +108,8 @@ export function TimelineCharts({ points }: { points: TimelinePoint[] }) {
               tick={AXIS_STYLE}
               tickLine={false}
               axisLine={{ stroke: "var(--baseline)" }}
-              minTickGap={24}
+              ticks={ticks}
+              interval={0}
             />
             <YAxis
               tick={AXIS_STYLE}

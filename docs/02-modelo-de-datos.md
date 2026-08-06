@@ -90,10 +90,10 @@ Estas son las cifras que el tablero calcula y que no están en el archivo origin
 | Métrica | Cómo se calcula |
 |---|---|
 | Números de un bloque | `10 ^ (10 − largo(indicativo) − largo(bloque))` |
-| Capacidad de un indicativo | `8 × 10 ^ (dígitos de abonado − 1)` menos el tramo del 911, que no es asignable |
+| Capacidad de un indicativo | `8 × 10 ^ (dígitos de abonado − 1)`, menos el tramo del 911 y menos lo que se lleva un indicativo más largo que abra dentro de él |
 | Números asignados | Suma de la capacidad de todos los bloques |
 | Ocupación | Números asignados ÷ capacidad del indicativo |
-| Tramos libres | Huecos entre los intervalos que cubren los bloques asignados y los prefijos reservados |
+| Tramos libres | Huecos entre los bloques asignados, los prefijos reservados y los tramos cedidos a otro indicativo |
 | Indicativos disponibles | Espacio de cuatro dígitos bajo los prefijos 2 y 3 no cubierto por un indicativo en uso |
 
 El fundamento normativo de cada una está en
