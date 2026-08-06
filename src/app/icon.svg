@@ -1,10 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Numeración geográfica argentina">
   <!--
     Tubo de teléfono fijo sobre el azul de la serie principal del tablero
-    (--series-1). El trazo va en blanco para que se lea igual en una pestaña
-    clara y en una oscura: el favicon no hereda el tema del sitio.
+    (la variable series-1 de globals.css). El trazo va en blanco para que se
+    lea igual en una pestaña clara y en una oscura: el favicon no hereda el
+    tema del sitio.
 
     Ícono "phone" de Lucide (https://lucide.dev), licencia ISC.
+
+    Ojo: esto es XML, no HTML. Un comentario no puede contener dos guiones
+    seguidos; si los lleva, el navegador descarta el ícono entero.
   -->
   <rect width="32" height="32" rx="7" fill="#2a78d6"/>
   <g transform="translate(5.8 5.8) scale(0.85)"
