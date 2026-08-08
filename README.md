@@ -79,6 +79,10 @@ El procedimiento completo, incluido qué hacer con los avisos de validación, es
 Next.js 16 (App Router) · TypeScript · Tailwind CSS 4 · Recharts · SheetJS para leer
 el Excel. Despliegue en Vercel sin configuración adicional.
 
+## Autor
+
+Gustavo Riveros Jasis · [grjasis@code.ar](mailto:grjasis@code.ar)
+
 ## Fuentes
 
 - Base de numeración geográfica: [Enacom](https://www.enacom.gob.ar)
